@@ -1,22 +1,8 @@
 import numpy as np
 from env import actions,  State, width, length, is_terminal_state, do_action, reward
 from e_greedy import e_greedy_policy as policy
-
-Q_table = dict()
-
-def getQ(s, a):
-    if((s.pos.x, s.pos.y, a) in Q_table):
-        return Q_table[(s.pos.x, s.pos.y, a)]
-    else:
-        return 0
-    # a_index = actions.map_to_id(a)
-    # return Q_table[s.pos.x+1, s.pos.y, a_index]
-
-def setQ(s, a, new_q):
-    Q_table[(s.pos.x, s.pos.y, a)] = new_q
-    # a_index = actions.map_to_id(a)
-    # Q_table[s.pos.x+1, s.pos.y, a_index] = new_q
-        
+from q_table import Q_table, getQ, setQ
+    
 # def init_Q_table():    
     # Q_table = np.zeros((width+2, length, actions.count)) # available states (invalid ones also)
 
