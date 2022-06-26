@@ -1,56 +1,88 @@
-from tkinter import Y
-
-
+# Actions
 class actions:
     left = 'left'
     right = 'right'
     straight = 'straight'
     
+    count = 3
+
+    def get_available_actions(state):
+        return [actions.left, actions.right, actions.straight] # here every action is available in every state, but it not always is the case
+
+    def map_to_id(action):
+        a_id = -1
+        match action:
+            case actions.left:
+                a_id = 0
+            case actions.right:
+                a_id = 1
+            case actions.straight:
+                a_id = 2
+        return a_id
+    
+# Consts
+
 width = 3
 length = 100
 
-
-def init_state():
-    class State:
-        def __init__(self):
-            self.pos = Position(int(width/2), 0) # start at center on x and 0 on y
-    class Position:
+# State
+class Position:
         def __init__(self, x, y):
             self.x = x
             self.y = y
-    s0 = State()
-    
-    return s0 # initial state
-
-state = init_state()
-
+class State:
+        def __init__(self, x, y):
+            self.pos = Position(x, y) # start at center on x and 0 on y
+        
+        def get_init_state():
+            return State(int(width/2), 0) # start at center on x and 0 on y)
+            
+        def copy_of(state):
+            return State(state.pos.x, state.pos.y)
+        
+        def add(state, dx, dy):
+            return State(state.pos.x + dx, state.pos.y + dy)
+# Methods
 
 def is_terminal_state(state):
-    if (state.x < 0 or state.x > width-1):
+    if (state.pos.x < 0 or state.pos.x > width-1):
         return (True, 'fail')
     elif (state.pos.y > length):
         return (True, 'win')
     else: 
         return (False, '')
 
-def step(action):
+def do_action(action, current_state):
+    dx = 0
     match action:
         case actions.left:
-            state.pos.x -= 1
+            dx = -1
         case actions.right:
-            state.pos.x += 1
+            dx = 1
+            
+    next_state = State.add(current_state, dx, dy=1)
     
-    state.pos.y += 1
-    return state
+    r = reward(current_state, action, next_state)
+    return next_state, r
 
-def reward(state, action):
-    if state.pos.x == 0 and action == actions.left:
-        return -100
+def reward(state, action, next_state):
+    is_terminal, episode_result = is_terminal_state(next_state)
+    if (is_terminal == False):
+        return 0
     
-    if state.pos.x == width-1 and action == actions.right:
-        return -100
-    
-    if state.pos.y == 99:
+    if episode_result == 'win':
         return 100
+    
+    if episode_result == 'fail':
+        return -100
+    
+    # if state.pos.x == 0 and action == actions.left:
+    #     return -100
+    
+    # if state.pos.x == width-1 and action == actions.right:
+    #     return -100
+    
+    # if state.pos.y == 99:
+    #     return 100
     
     
