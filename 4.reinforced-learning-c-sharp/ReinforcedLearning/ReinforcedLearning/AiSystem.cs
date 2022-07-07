@@ -1,28 +1,50 @@
 using System.Collections.Generic;
+using ReinforcedLearning.Dtos;
+using ReinforcedLearning.Interfaces;
+using ReinforcedLearning.ReinforcedLearningObjects;
 
 namespace ReinforcedLearning
 {
-    public class AiSystem
+    public class AiSystem : IAiSystemApi
     {
-        private List<string> _receivedData = new List<string>()
+        private readonly float _alphaLearningRate;
+        private readonly float _gammaDiscountRate;
+
+        private State _state;
+        private Action _action;
+        private readonly QTable _q;
+        private readonly Policy _policy;
+        
+        public AiSystem(float alphaLearningRate, float epsilonProbabilityOfBest, float gammaDiscountRate)
         {
-            "0;False;0;3.655;3.9896;5.2739;10.0675;17.1701;10.0675;5.2739;3.9896;3.655",
-            "0;False;0;3.655;3.9896;5.2739;9.58;13.4201;21.9183;5.2739;3.9896;3.655",
-            "0;False;0;3.655;3.9896;5.2739;6.9803;9.1701;18.572;5.2739;3.9896;3.655",
-            "0;False;0;3.655;3.5891;3.5947;3.9777;5.1701;15.1641;13.5955;5.6574;3.655",
-            "0;False;0;1.3552;0.9298;0.7628;0.8277;1.1701;2.4177;11.5825;10.4676;7.0902",
-        };
+            _q = new QTable();
+            _alphaLearningRate = alphaLearningRate;
+            _policy = new Policy(epsilonProbabilityOfBest, Action.GetAvailableActions, _q.Get);
+            _gammaDiscountRate = gammaDiscountRate;
+        }
 
         public void Initialize()
         {
-            
+            _state = State.GetInitialState();
+            _action = _policy.ChooseAction(_state);
         }
 
-        public void PredictAndLearn()
+        public float Predict(IFrameData frameData) => PredictAndLearn(FrameDataDto.FromFrameData(frameData));
+
+        private float PredictAndLearn(FrameDataDto dto)
         {
+            var newAction = _policy.ChooseAction(dto.NewState);
             
+            var newQ = _q.Get(_state, _action) + _alphaLearningRate *
+                (dto.Reward + _gammaDiscountRate * _q.Get(dto.NewState, newAction) - _q.Get(_state, _action));
+            _q.Set(_state, _action, newQ);
+
+            _state = dto.NewState;
+            _action = newAction;
+
+            return newAction.Rotation;
         }
-        
-        
     }
+
+    
 }
