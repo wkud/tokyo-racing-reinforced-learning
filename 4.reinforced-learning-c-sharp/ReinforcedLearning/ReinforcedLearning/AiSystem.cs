@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+using System;
 using ReinforcedLearning.Dtos;
 using ReinforcedLearning.Interfaces;
 using ReinforcedLearning.ReinforcedLearningObjects;
+using Action = ReinforcedLearning.ReinforcedLearningObjects.Action;
 
 namespace ReinforcedLearning
 {
@@ -14,7 +15,8 @@ namespace ReinforcedLearning
         private Action _action;
         private readonly QTable _q;
         private readonly Policy _policy;
-        
+        private IEnvApi _envApi;
+
         public AiSystem(float alphaLearningRate, float epsilonProbabilityOfBest, float gammaDiscountRate)
         {
             _q = new QTable();
@@ -23,9 +25,10 @@ namespace ReinforcedLearning
             _gammaDiscountRate = gammaDiscountRate;
         }
 
-        public void Initialize()
+        public void Initialize(IEnvApi envApi)
         {
-            _state = State.GetInitialState();
+            _envApi = envApi;
+            _state = new State(_envApi.GetInitialDistances());
             _action = _policy.ChooseAction(_state);
         }
 
@@ -43,6 +46,11 @@ namespace ReinforcedLearning
             _action = newAction;
 
             return newAction.Rotation;
+        }
+
+        public void PrintQTable(Action<string> printCallback)
+        {
+            _q.Print(printCallback);
         }
     }
 

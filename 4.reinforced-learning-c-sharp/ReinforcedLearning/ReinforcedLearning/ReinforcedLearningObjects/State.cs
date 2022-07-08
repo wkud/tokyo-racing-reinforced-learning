@@ -13,11 +13,6 @@ namespace ReinforcedLearning.ReinforcedLearningObjects
             Distances = distances;
         }
 
-        public static State GetInitialState()
-        {
-            return new State(new float[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-        }
-
         public ImmutableArray<float> ToImmutable(int roundingDigits)
         {
             var immutable = Distances

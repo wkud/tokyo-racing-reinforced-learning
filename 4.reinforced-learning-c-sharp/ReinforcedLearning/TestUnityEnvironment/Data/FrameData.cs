@@ -29,7 +29,7 @@ namespace TestUnityEnvironment.Data
         {
             new FrameData()
             {
-                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 0 },
+                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 100 },
                 IsGameOver = false,
                 Input = new MovementVector() { Rotation = 0 },
                 Raycasts = new RaycastData()
@@ -39,7 +39,7 @@ namespace TestUnityEnvironment.Data
             },
             new FrameData()
             {
-                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 0 },
+                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 10 },
                 IsGameOver = false,
                 Input = new MovementVector() { Rotation = 0 },
                 Raycasts = new RaycastData()
@@ -49,7 +49,7 @@ namespace TestUnityEnvironment.Data
             },
             new FrameData()
             {
-                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 0 },
+                Score = new ScoreData() { ScoreForEqualLeftRightDistance = -100 },
                 IsGameOver = false,
                 Input = new MovementVector() { Rotation = 0 },
                 Raycasts = new RaycastData()
@@ -59,7 +59,7 @@ namespace TestUnityEnvironment.Data
             },
             new FrameData()
             {
-                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 0 },
+                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 50 },
                 IsGameOver = false,
                 Input = new MovementVector() { Rotation = 0 },
                 Raycasts = new RaycastData()
@@ -69,7 +69,7 @@ namespace TestUnityEnvironment.Data
             },
             new FrameData()
             {
-                Score = new ScoreData() { ScoreForEqualLeftRightDistance = 0 },
+                Score = new ScoreData() { ScoreForEqualLeftRightDistance = -20 },
                 IsGameOver = false,
                 Input = new MovementVector() { Rotation = 0 },
                 Raycasts = new RaycastData()

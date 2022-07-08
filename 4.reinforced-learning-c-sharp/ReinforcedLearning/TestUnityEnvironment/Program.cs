@@ -10,12 +10,14 @@ namespace TestUnityEnvironment
             var ai = new AiSystem(0.25f, 0.85f, 0.7f);
             var env = new Environment(ai);
             
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 env.TakeSimulationStep();
                 var rot = env.MovementVector.Rotation;
-                Console.WriteLine(rot);
+                // Console.WriteLine(rot);
             }
+
+            ai.PrintQTable(Console.WriteLine);
             
             Console.WriteLine("Finished");
         }
